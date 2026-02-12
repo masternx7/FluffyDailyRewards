@@ -44,4 +44,4 @@ FluffyDailyRewards integrates with PlaceholderAPI. All placeholders use the pref
 
 ---
 
-**Made with ❤️ for MasterN**
+**Made with ❤️ By MasterN**
