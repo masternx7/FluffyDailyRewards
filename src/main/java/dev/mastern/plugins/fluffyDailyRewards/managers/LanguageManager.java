@@ -106,4 +106,16 @@ public class LanguageManager {
     public void reload() {
         loadLanguage();
     }
+    
+    public String getRawMessage(String key) {
+        return messages.getOrDefault(key, key);
+    }
+    
+    public String getRawMessage(String key, Map<String, String> replacements) {
+        String message = messages.getOrDefault(key, key);
+        for (Map.Entry<String, String> entry : replacements.entrySet()) {
+            message = message.replace("{" + entry.getKey() + "}", entry.getValue());
+        }
+        return message;
+    }
 }

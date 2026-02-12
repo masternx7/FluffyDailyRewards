@@ -97,33 +97,37 @@ public class DailyRewardsPlaceholder extends PlaceholderExpansion {
                 return plugin.getPlayerDataManager().canClaim(data) ? "true" : "false";
                 
             case "can_claim_formatted":
-                return plugin.getPlayerDataManager().canClaim(data) 
-                    ? lang.getMessage("placeholder.yes") 
-                    : lang.getMessage("placeholder.no");
+                if (plugin.getPlayerDataManager().canClaim(data)) {
+                    String yes = lang.getRawMessage("placeholder.yes");
+                    return yes.equals("placeholder.yes") ? "Yes" : yes;
+                } else {
+                    String no = lang.getRawMessage("placeholder.no");
+                    return no.equals("placeholder.no") ? "No" : no;
+                }
                 
             case "last_claim":
                 if (data.getLastClaimTime() > 0) {
                     return formatTime(data.getLastClaimTime());
                 }
-                return lang.getMessage("placeholder.never");
+                return lang.getRawMessage("placeholder.never");
                 
             case "last_claim_date":
                 if (data.getLastClaimTime() > 0) {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                     return sdf.format(new Date(data.getLastClaimTime()));
                 }
-                return lang.getMessage("placeholder.never");
+                return lang.getRawMessage("placeholder.never");
                 
             case "next_claim":
                 if (plugin.getPlayerDataManager().canClaim(data)) {
-                    return lang.getMessage("placeholder.now");
+                    return lang.getRawMessage("placeholder.now");
                 }
                 long nextClaim = plugin.getPlayerDataManager().getNextClaimTime(data);
                 long timeLeft = nextClaim - System.currentTimeMillis();
                 if (timeLeft > 0) {
                     return formatTimeLeft(timeLeft, lang);
                 }
-                return lang.getMessage("placeholder.now");
+                return lang.getRawMessage("placeholder.now");
                 
             case "next_claim_timestamp":
                 if (plugin.getPlayerDataManager().canClaim(data)) {
