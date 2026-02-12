@@ -1,0 +1,57 @@
+# Language setting (th, en, etc.)
+language: "en"
+
+# Reset type: "midnight" or "24hours"
+# midnight: Reset at 00:00 every day
+# 24hours: Reset 24 hours after last claim
+reset-type: "midnight"
+
+# Timezone for midnight reset (e.g., "Asia/Bangkok", "America/New_York", "Europe/London")
+# See: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone: "Asia/Bangkok"
+
+# Database settings
+database:
+  # Type: "sqlite" or "mysql"
+  type: "sqlite"
+  # MySQL configuration
+  mysql:
+    host: "localhost"
+    port: 3306
+    database: "fluffydailyrewards"
+    table: "fdrewards_data"
+    username: "root"
+    password: "password"
+    properties:
+      useSSL: false
+      autoReconnect: true
+      
+# Sound settings
+sounds:
+  claim-success: "ENTITY_PLAYER_LEVELUP"
+  claim-already: "ENTITY_VILLAGER_NO"
+  open-menu: "BLOCK_CHEST_OPEN"
+
+# Particle effects
+particles:
+  enabled: true
+  type: "VILLAGER_HAPPY"
+  count: 10
+
+# Join notification
+join-notification:
+  enabled: true
+  delay: 20  # Ticks (20 ticks = 1 second)
+  messages:
+    - ""
+    - "&7&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    - "  &#FFD700&lDaily Rewards Available!"
+    - ""
+    - "  &7You have unclaimed rewards waiting!"
+    - "  {click} &7or use &#00FF00/daily"
+    - "&7&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    - ""
+  click-message: "&#FFFF00[Click here to claim]"
+  hover-text:
+    - "&#00FF00Click to open Daily Rewards"
+    - "&7Get your daily rewards now!"

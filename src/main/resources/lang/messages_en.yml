@@ -1,0 +1,46 @@
+prefix: "&7[&#FFD700DailyRewards&7]"
+
+general:
+  no-permission: "&cYou don't have permission to use this command!"
+  reload: "&aConfiguration reloaded successfully!"
+  give:
+    success: "&#00FF00Successfully gave day {day} reward to {player}!"
+    failed: "&#FF0000Failed to give reward!"
+  reset: "&#00FF00Successfully reset {player}'s data!"
+  set: "&#00FF00Successfully set {player}'s day to {day}!"
+  player-not-found: "&#FF0000Player not found!"
+  invalid-number: "&#FF0000Invalid number!"
+  invalid-day: "&#FF0000Invalid day!"
+  database: "&cDatabase error occurred!"
+  command-error: "&cAn error occurred while executing the command!"
+  player-only: "&cThis command can only be used by players!"
+
+rewards:
+  claimed: "&#00FF00You have claimed day {day} reward!"
+  already-claimed: "&#FF0000You have already claimed today's reward!"
+  not-available: "&#FF0000This reward is not available yet!"
+  streak-lost: "&#FF0000Your streak has been reset!"
+  streak-continue: "&#00FF00Your streak continues! Day {day}"
+  
+menu:
+  status:
+    can-claim: "&#00FF00You can claim today's reward!"
+    already-claimed: "&#FFFF00You have already claimed today"
+    next-available: "&7Next claim available in: &#FFFF00{time}"
+
+check:
+  header: "&7&m                    "
+  title: " &#FFFF00{player}'s Data"
+  footer: "&7&m                    "
+    
+time:
+  days: "{amount}d"
+  hours: "{amount}h"
+  minutes: "{amount}m"
+  seconds: "{amount}s"
+
+placeholder:
+  yes: "Yes"
+  no: "No"
+  now: "Now"
+  never: "Never"

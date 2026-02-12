@@ -1,0 +1,58 @@
+name: FluffyDailyRewards
+version: '${project.version}'
+main: dev.mastern.plugins.fluffyDailyRewards.FluffyDailyRewards
+api-version: '1.13'
+folia-supported: true
+authors: [ MasterN ]
+description: Daily rewards plugin with MySQL/SQLite support
+softdepend: [PlaceholderAPI]
+
+commands:
+  daily:
+    description: Open daily rewards menu or use admin commands
+    usage: |
+      /daily - Open rewards menu
+      /daily admin <reload|give|reset|set|check>
+      /daily admin reload - Reload configuration
+      /daily admin give <player> <day> - Give reward to player
+      /daily admin reset <player> - Reset player data
+      /daily admin set <player> <day> - Set player's current day
+      /daily admin check <player> - Check player data
+    aliases: [dailyreward, dr]
+    permission: fluffydailyrewards.use
+
+permissions:
+  fluffydailyrewards.admin:
+    description: Admin permission
+    default: op
+    children:
+      fluffydailyrewards.use: true
+      fluffydailyrewards.admin.reload: true
+      fluffydailyrewards.admin.give: true
+      fluffydailyrewards.admin.reset: true
+      fluffydailyrewards.admin.set: true
+      fluffydailyrewards.admin.check: true
+      
+  fluffydailyrewards.use:
+    description: Use daily rewards
+    default: true
+    
+  fluffydailyrewards.admin.reload:
+    description: Reload configuration
+    default: op
+    
+  fluffydailyrewards.admin.give:
+    description: Give rewards to players
+    default: op
+    
+  fluffydailyrewards.admin.reset:
+    description: Reset player data
+    default: op
+    
+  fluffydailyrewards.admin.set:
+    description: Set player day
+    default: op
+    
+  fluffydailyrewards.admin.check:
+    description: Check player data
+    default: op

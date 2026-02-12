@@ -1,0 +1,71 @@
+menu:
+  title: "&#000000Daily Rewards"
+  size: 54
+  items-per-page: 28
+  reward-slots: "10-16,19-25,28-34,37-43"
+
+navigation:
+  previous-page:
+    slots: "48"
+    material: "ARROW"
+    display_name: "&#00FF00Previous Page"
+    custom-model-data: 0
+    lore:
+      - "&7Click to go to previous page"
+
+  next-page:
+    slots: "50"
+    material: "ARROW"
+    display_name: "&#00FF00Next Page"
+    custom-model-data: 0
+    lore:
+      - "&7Click to go to next page"
+
+decorations:
+  border:
+    material: "BLACK_STAINED_GLASS_PANE"
+    display_name: " "
+    custom-model-data: 0
+    slots: "0-8,9,17-18,26-27,35-36,44-47,48-53"
+
+  info:
+    slot: 4
+    material: "PLAYER_HEAD"
+    display_name: "&#FFFF00{player}'s Progress"
+    custom-model-data: 0
+    lore:
+      - "&7Current Streak: &#00FF00{streak} days"
+      - "&7Total Claims: &#00FF00{total_claims}"
+      - "&7Next Reward: &#FFFF00Day {next_day}"
+      - ""
+      - "&7{status}"
+
+reward-states:
+  claimed:
+    material: "LIME_DYE"
+    custom-model-data: 0
+    display_name: "&#FFFF00Day {day} - Claimed &7| {reward_name}"
+    lore:
+      - ""
+      - "&#00FF00Claimed!"
+    glow: true
+
+  available:
+    display_name: "&#FFFF00Day {day} - Available &7| {reward_name}"
+    lore:
+      - ""
+      - "&#FFFF00Click to claim!"
+    glow: true
+
+  waiting:
+    display_name: "&#FFFF00Day {day} - Waiting &7| {reward_name}"
+    lore:
+      - ""
+      - "&#FFFF00Come back tomorrow!"
+    glow: false
+
+  locked:
+    display_name: "&#FFFF00Day {day} - Locked &7| {reward_name}"
+    lore:
+      - ""
+      - "&#FF0000Locked"

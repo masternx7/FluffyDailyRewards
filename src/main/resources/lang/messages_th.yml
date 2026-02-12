@@ -1,0 +1,46 @@
+prefix: "&7[&#FFD700DailyRewards&7]"
+
+general:
+  no-permission: "&cคุณไม่มีสิทธิ์ใช้คำสั่งนี้!"
+  reload: "&aโหลดการตั้งค่าใหม่สำเร็จ!"
+  give:
+    success: "&#00FF00มอบรางวัลวันที่ {day} ให้ {player} สำเร็จ!"
+    failed: "&#FF0000ไม่สามารถมอบรางวัลได้!"
+  reset: "&#00FF00รีเซ็ตข้อมูลของ {player} สำเร็จ!"
+  set: "&#00FF00ตั้งค่าวันของ {player} เป็นวันที่ {day}!"
+  player-not-found: "&#FF0000ไม่พบผู้เล่นนี้!"
+  invalid-number: "&#FF0000ตัวเลขไม่ถูกต้อง!"
+  invalid-day: "&#FF0000วันที่ไม่ถูกต้อง!"
+  database: "&cเกิดข้อผิดพลาดของฐานข้อมูล!"
+  command-error: "&cเกิดข้อผิดพลาดขณะรันคำสั่ง!"
+  player-only: "&cคำสั่งนี้ใช้ได้เฉพาะผู้เล่นเท่านั้น!"
+
+rewards:
+  claimed: "&#00FF00คุณได้รับรางวัลวันที่ {day} แล้ว!"
+  already-claimed: "&#FF0000คุณได้รับรางวัลวันนี้ไปแล้ว!"
+  not-available: "&#FF0000รางวัลนี้ยังไม่พร้อมใช้งาน!"
+  streak-lost: "&#FF0000สตรีคของคุณถูกรีเซ็ตแล้ว!"
+  streak-continue: "&#00FF00สตรีคของคุณยังคงอยู่! วันที่ {day}"
+  
+menu:
+  status:
+    can-claim: "&#00FF00คุณสามารถรับรางวัลวันนี้ได้แล้ว!"
+    already-claimed: "&#FFFF00คุณได้รับรางวัลวันนี้ไปแล้ว"
+    next-available: "&7รับรางวัลครั้งถัดไปได้ใน: &#FFFF00{time}"
+
+check:
+  header: "&7&m                    "
+  title: " &#FFFF00&l{player} ข้อมูล"
+  footer: "&7&m                    "
+    
+time:
+  days: "{amount} วัน"
+  hours: "{amount} ชั่วโมง"
+  minutes: "{amount} นาที"
+  seconds: "{amount} วินาที"
+
+placeholder:
+  yes: "ได้"
+  no: "ไม่ได้"
+  now: "ตอนนี้"
+  never: "ไม่เคย"

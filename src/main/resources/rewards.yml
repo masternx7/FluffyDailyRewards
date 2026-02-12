@@ -1,0 +1,71 @@
+# Daily Rewards Configuration
+rewards:
+  1:
+    name: "&#FFD700Day 1 Reward"
+    material: "GOLD_INGOT"
+    custom-model-data: 0
+    lore:
+      - "&7Claim your first day reward!"
+    commands:
+      - "moneymanager add {player} 200"
+
+  2:
+    name: "&#FFD700Day 2 Reward"
+    material: "DIAMOND"
+    custom-model-data: 0
+    lore:
+      - "&7Second day bonus!"
+    commands:
+      - "give {player} diamond 10"
+      - "eco give {player} 2000"
+
+  3:
+    name: "&#FFD700Day 3 Reward"
+    material: "EMERALD"
+    custom-model-data: 0
+    lore:
+      - "&7Three days in a row!"
+    commands:
+      - "give {player} emerald 5"
+      - "eco give {player} 3000"
+
+  4:
+    name: "&#FFD700Day 4 Reward"
+    material: "IRON_INGOT"
+    custom-model-data: 0
+    lore:
+      - "&7Four days strong!"
+    commands:
+      - "give {player} iron_ingot 32"
+      - "eco give {player} 4000"
+
+  5:
+    name: "&#FFD700Day 5 Reward"
+    material: "GOLDEN_APPLE"
+    custom-model-data: 0
+    lore:
+      - "&7Five days milestone!"
+    commands:
+      - "give {player} golden_apple 3"
+      - "eco give {player} 5000"
+
+  6:
+    name: "&#FFD700Day 6 Reward"
+    material: "ENDER_PEARL"
+    custom-model-data: 0
+    lore:
+      - "&7Almost there!"
+    commands:
+      - "give {player} ender_pearl 16"
+      - "eco give {player} 6000"
+
+  7:
+    name: "&#FF0000Day 7 GRAND REWARD"
+    material: "NETHER_STAR"
+    custom-model-data: 0
+    lore:
+      - "&7Weekly Grand Prize!"
+    commands:
+      - "give {player} netherite_ingot 1"
+      - "eco give {player} 10000"
+      - "give {player} nether_star 1"
