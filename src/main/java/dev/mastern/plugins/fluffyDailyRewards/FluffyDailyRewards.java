@@ -67,20 +67,35 @@ public final class FluffyDailyRewards extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new MenuListener(this), this);
             Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
             
-            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-                try {
-                    new dev.mastern.plugins.fluffyDailyRewards.hooks.DailyRewardsPlaceholder(this).register();
-                    getLogger().info("PlaceholderAPI integration enabled!");
-                } catch (Exception e) {
-                    getLogger().warning("Failed to register PlaceholderAPI expansion: " + e.getMessage());
-                }
-            }
-            
             getLogger().info("FluffyDailyRewards has been enabled successfully!");
             getLogger().info("Loaded " + rewardsManager.getTotalRewards() + " rewards");
             getLogger().info("Database: " + getConfig().getString("database.type", "sqlite"));
             getLogger().info("Language: " + getConfig().getString("language", "en"));
             getLogger().info("Reset Type: " + getConfig().getString("reset-type", "midnight"));
+            
+            Runnable registerPAPI = () -> {
+                if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                    try {
+                        boolean registered = new dev.mastern.plugins.fluffyDailyRewards.hooks.DailyRewardsPlaceholder(this).register();
+                        if (registered) {
+                            getLogger().info("PlaceholderAPI integration enabled!");
+                        } else {
+                            getLogger().warning("Failed to register PlaceholderAPI expansion - already registered or error occurred");
+                        }
+                    } catch (Exception e) {
+                        getLogger().warning("Failed to register PlaceholderAPI expansion: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                } else {
+                    getLogger().info("PlaceholderAPI not found, placeholders will not be available.");
+                }
+            };
+            
+            if (isFolia) {
+                Bukkit.getGlobalRegionScheduler().runDelayed(this, task -> registerPAPI.run(), 20L);
+            } else {
+                Bukkit.getScheduler().runTaskLater(this, registerPAPI, 20L);
+            }
             
         } catch (Exception e) {
             getLogger().severe("Failed to initialize plugin!");
