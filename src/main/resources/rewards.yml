@@ -69,3 +69,225 @@ rewards:
       - "give {player} netherite_ingot 1"
       - "eco give {player} 10000"
       - "give {player} nether_star 1"
+
+  8:
+    name: "&#FFD700Day 8 Reward"
+    material: "REDSTONE"
+    custom-model-data: 0
+    lore:
+      - "&7Week 2 begins!"
+    commands:
+      - "give {player} redstone 64"
+      - "eco give {player} 8000"
+
+  9:
+    name: "&#FFD700Day 9 Reward"
+    material: "LAPIS_LAZULI"
+    custom-model-data: 0
+    lore:
+      - "&7Keep going!"
+    commands:
+      - "give {player} lapis_lazuli 64"
+      - "eco give {player} 9000"
+
+  10:
+    name: "&#FFD700Day 10 Reward"
+    material: "COAL"
+    custom-model-data: 0
+    lore:
+      - "&7Ten days strong!"
+    commands:
+      - "give {player} coal 64"
+      - "eco give {player} 10000"
+
+  11:
+    name: "&#FFD700Day 11 Reward"
+    material: "BOOK"
+    custom-model-data: 0
+    lore:
+      - "&7Knowledge is power!"
+    commands:
+      - "give {player} book 16"
+      - "eco give {player} 11000"
+
+  12:
+    name: "&#FFD700Day 12 Reward"
+    material: "ENCHANTED_BOOK"
+    custom-model-data: 0
+    lore:
+      - "&7Magic awaits!"
+    commands:
+      - "give {player} enchanted_book 1"
+      - "eco give {player} 12000"
+
+  13:
+    name: "&#FFD700Day 13 Reward"
+    material: "EXPERIENCE_BOTTLE"
+    custom-model-data: 0
+    lore:
+      - "&7Lucky 13!"
+    commands:
+      - "give {player} experience_bottle 32"
+      - "eco give {player} 13000"
+
+  14:
+    name: "&#FF0000Day 14 WEEK 2 REWARD"
+    material: "BEACON"
+    custom-model-data: 0
+    lore:
+      - "&7Two weeks milestone!"
+    commands:
+      - "give {player} beacon 1"
+      - "eco give {player} 20000"
+
+  15:
+    name: "&#FFD700Day 15 Reward"
+    material: "OBSIDIAN"
+    custom-model-data: 0
+    lore:
+      - "&7Week 3 begins!"
+    commands:
+      - "give {player} obsidian 32"
+      - "eco give {player} 15000"
+
+  16:
+    name: "&#FFD700Day 16 Reward"
+    material: "GLOWSTONE"
+    custom-model-data: 0
+    lore:
+      - "&7Shine bright!"
+    commands:
+      - "give {player} glowstone 64"
+      - "eco give {player} 16000"
+
+  17:
+    name: "&#FFD700Day 17 Reward"
+    material: "QUARTZ"
+    custom-model-data: 0
+    lore:
+      - "&7Pure and clean!"
+    commands:
+      - "give {player} quartz 64"
+      - "eco give {player} 17000"
+
+  18:
+    name: "&#FFD700Day 18 Reward"
+    material: "PRISMARINE_SHARD"
+    custom-model-data: 0
+    lore:
+      - "&7Ocean treasures!"
+    commands:
+      - "give {player} prismarine_shard 32"
+      - "eco give {player} 18000"
+
+  19:
+    name: "&#FFD700Day 19 Reward"
+    material: "BLAZE_ROD"
+    custom-model-data: 0
+    lore:
+      - "&7Burning bright!"
+    commands:
+      - "give {player} blaze_rod 16"
+      - "eco give {player} 19000"
+
+  20:
+    name: "&#FFD700Day 20 Reward"
+    material: "ENDER_EYE"
+    custom-model-data: 0
+    lore:
+      - "&7Twenty days!"
+    commands:
+      - "give {player} ender_eye 8"
+      - "eco give {player} 20000"
+
+  21:
+    name: "&#FF0000Day 21 WEEK 3 REWARD"
+    material: "DRAGON_HEAD"
+    custom-model-data: 0
+    lore:
+      - "&7Three weeks champion!"
+    commands:
+      - "give {player} dragon_head 1"
+      - "eco give {player} 30000"
+
+  22:
+    name: "&#FFD700Day 22 Reward"
+    material: "NETHERITE_SCRAP"
+    custom-model-data: 0
+    lore:
+      - "&7Final week begins!"
+    commands:
+      - "give {player} netherite_scrap 2"
+      - "eco give {player} 22000"
+
+  23:
+    name: "&#FFD700Day 23 Reward"
+    material: "ANCIENT_DEBRIS"
+    custom-model-data: 0
+    lore:
+      - "&7Rare find!"
+    commands:
+      - "give {player} ancient_debris 1"
+      - "eco give {player} 23000"
+
+  24:
+    name: "&#FFD700Day 24 Reward"
+    material: "TOTEM_OF_UNDYING"
+    custom-model-data: 0
+    lore:
+      - "&7Second chance!"
+    commands:
+      - "give {player} totem_of_undying 1"
+      - "eco give {player} 24000"
+
+  25:
+    name: "&#FFD700Day 25 Reward"
+    material: "ELYTRA"
+    custom-model-data: 0
+    lore:
+      - "&7Fly high!"
+    commands:
+      - "give {player} elytra 1"
+      - "eco give {player} 25000"
+
+  26:
+    name: "&#FFD700Day 26 Reward"
+    material: "TRIDENT"
+    custom-model-data: 0
+    lore:
+      - "&7Ocean power!"
+    commands:
+      - "give {player} trident 1"
+      - "eco give {player} 26000"
+
+  27:
+    name: "&#FFD700Day 27 Reward"
+    material: "ENCHANTED_GOLDEN_APPLE"
+    custom-model-data: 0
+    lore:
+      - "&7Divine apple!"
+    commands:
+      - "give {player} enchanted_golden_apple 3"
+      - "eco give {player} 27000"
+
+  28:
+    name: "&#FF0000Day 28 WEEK 4 REWARD"
+    material: "WITHER_SKELETON_SKULL"
+    custom-model-data: 0
+    lore:
+      - "&7Four weeks master!"
+    commands:
+      - "give {player} wither_skeleton_skull 3"
+      - "eco give {player} 40000"
+
+  29:
+    name: "&#FF00FFDAY 29 ULTIMATE REWARD"
+    material: "DRAGON_EGG"
+    custom-model-data: 0
+    lore:
+      - "&5&lMONTHLY GRAND PRIZE!"
+      - "&7You are a legend!"
+    commands:
+      - "give {player} dragon_egg 1"
+      - "give {player} netherite_ingot 5"
+      - "eco give {player} 100000"
