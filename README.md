@@ -26,12 +26,12 @@ FluffyDailyRewards integrates with PlaceholderAPI. All placeholders use the pref
 
 ### Available Placeholders
 
+#### Player Statistics
 | Placeholder | Description | Example Output |
 |------------|-------------|----------------|
 | `%daily_streak%` | Current streak (consecutive days) | `5` |
 | `%daily_total_claims%` | Total number of claims | `23` |
 | `%daily_next_day%` | Next day to claim | `6` |
-| `%daily_current_day%` | Same as next_day | `6` |
 | `%daily_max_day%` | Maximum day configured | `7` |
 | `%daily_can_claim%` | Can claim today (true/false) | `true` |
 | `%daily_can_claim_formatted%` | Can claim today (Yes/No) | `Yes` |
@@ -41,6 +41,20 @@ FluffyDailyRewards integrates with PlaceholderAPI. All placeholders use the pref
 | `%daily_next_claim_timestamp%` | Unix timestamp of next claim | `1739308800000` |
 | `%daily_status%` | Full status message | `Next claim available in: 21h` |
 | `%daily_progress%` | Current progress | `5/7` |
+
+#### Leaderboard Placeholders (Streak)
+| Placeholder | Description | Example Output |
+|------------|-------------|----------------|
+| `%daily_top_streak_name_<number>%` | Player name at position (1-max) | `Steve` |
+| `%daily_top_streak_value_<number>%` | Streak value at position (1-max) | `15` |
+| `%daily_top_streak_rank%` | Current player's streak rank | `3` |
+
+#### Leaderboard Placeholders (Total Claims)
+| Placeholder | Description | Example Output |
+|------------|-------------|----------------|
+| `%daily_top_total_claims_name_<number>%` | Player name at position (1-max) | `Alex` |
+| `%daily_top_total_claims_value_<number>%` | Total claims at position (1-max) | `150` |
+| `%daily_top_total_claims_rank%` | Current player's total claims rank | `7` |
 
 ---
 

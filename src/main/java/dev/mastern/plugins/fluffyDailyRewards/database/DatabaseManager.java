@@ -5,7 +5,7 @@ import dev.mastern.plugins.fluffyDailyRewards.models.PlayerData;
 
 import java.io.File;
 import java.sql.*;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class DatabaseManager {
@@ -155,5 +155,101 @@ public class DatabaseManager {
         } catch (SQLException e) {
             return false;
         }
+    }
+    
+    public CompletableFuture<List<PlayerData>> getTopStreak(int limit) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<PlayerData> topPlayers = new ArrayList<>();
+            String sql = "SELECT * FROM " + tableName + " ORDER BY streak DESC, total_claims DESC LIMIT ?";
+            
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, limit);
+                ResultSet rs = statement.executeQuery();
+                
+                while (rs.next()) {
+                    PlayerData data = new PlayerData(
+                            UUID.fromString(rs.getString("uuid")),
+                            rs.getString("player_name"),
+                            rs.getInt("current_day"),
+                            rs.getInt("total_claims"),
+                            rs.getLong("last_claim_time"),
+                            rs.getInt("streak")
+                    );
+                    topPlayers.add(data);
+                }
+            } catch (SQLException e) {
+                plugin.getLogger().severe("Error loading top streak data: " + e.getMessage());
+            }
+            
+            return topPlayers;
+        });
+    }
+    
+    public CompletableFuture<List<PlayerData>> getTopTotalClaims(int limit) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<PlayerData> topPlayers = new ArrayList<>();
+            String sql = "SELECT * FROM " + tableName + " ORDER BY total_claims DESC, streak DESC LIMIT ?";
+            
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, limit);
+                ResultSet rs = statement.executeQuery();
+                
+                while (rs.next()) {
+                    PlayerData data = new PlayerData(
+                            UUID.fromString(rs.getString("uuid")),
+                            rs.getString("player_name"),
+                            rs.getInt("current_day"),
+                            rs.getInt("total_claims"),
+                            rs.getLong("last_claim_time"),
+                            rs.getInt("streak")
+                    );
+                    topPlayers.add(data);
+                }
+            } catch (SQLException e) {
+                plugin.getLogger().severe("Error loading top total claims data: " + e.getMessage());
+            }
+            
+            return topPlayers;
+        });
+    }
+    
+    public CompletableFuture<Integer> getPlayerRankByStreak(UUID uuid) {
+        return CompletableFuture.supplyAsync(() -> {
+            String sql = "SELECT COUNT(*) + 1 as rank FROM " + tableName + " WHERE streak > " +
+                    "(SELECT streak FROM " + tableName + " WHERE uuid = ?)";
+            
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, uuid.toString());
+                ResultSet rs = statement.executeQuery();
+                
+                if (rs.next()) {
+                    return rs.getInt("rank");
+                }
+            } catch (SQLException e) {
+                plugin.getLogger().severe("Error getting player rank by streak: " + e.getMessage());
+            }
+            
+            return 0;
+        });
+    }
+    
+    public CompletableFuture<Integer> getPlayerRankByTotalClaims(UUID uuid) {
+        return CompletableFuture.supplyAsync(() -> {
+            String sql = "SELECT COUNT(*) + 1 as rank FROM " + tableName + " WHERE total_claims > " +
+                    "(SELECT total_claims FROM " + tableName + " WHERE uuid = ?)";
+            
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, uuid.toString());
+                ResultSet rs = statement.executeQuery();
+                
+                if (rs.next()) {
+                    return rs.getInt("rank");
+                }
+            } catch (SQLException e) {
+                plugin.getLogger().severe("Error getting player rank by total claims: " + e.getMessage());
+            }
+            
+            return 0;
+        });
     }
 }

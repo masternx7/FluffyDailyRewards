@@ -38,6 +38,13 @@ particles:
   type: "VILLAGER_HAPPY"
   count: 10
 
+# Leaderboard settings
+leaderboard:
+  # Cache duration in seconds
+  cache-duration: 300
+  # Maximum number of players to show in leaderboards (10 = 1st to 10th place)
+  max-positions: 10
+
 # Join notification
 join-notification:
   enabled: true

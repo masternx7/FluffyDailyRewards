@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,9 +21,17 @@ public class DailyRewardsPlaceholder extends PlaceholderExpansion {
     private final FluffyDailyRewards plugin;
     private final Map<String, CachedValue> cache = new ConcurrentHashMap<>();
     private static final long CACHE_DURATION = 1000; // 1 second cache
+    
+    private final long leaderboardCacheDuration;
+    private final int maxLeaderboardPositions;
+    
+    private CachedLeaderboard cachedStreak;
+    private CachedLeaderboard cachedTotalClaims;
 
     public DailyRewardsPlaceholder(FluffyDailyRewards plugin) {
         this.plugin = plugin;
+        this.leaderboardCacheDuration = plugin.getConfig().getLong("leaderboard.cache-duration", 300) * 1000;
+        this.maxLeaderboardPositions = plugin.getConfig().getInt("leaderboard.max-positions", 10);
     }
 
     @Override
@@ -79,12 +88,54 @@ public class DailyRewardsPlaceholder extends PlaceholderExpansion {
     private String processPlaceholder(Player player, PlayerData data, String identifier) {
         LanguageManager lang = plugin.getLanguageManager();
         
+        if (identifier.startsWith("top_streak_name_")) {
+            try {
+                int position = Integer.parseInt(identifier.substring("top_streak_name_".length()));
+                return getTopStreakName(position);
+            } catch (NumberFormatException e) {
+                return "";
+            }
+        }
+        
+        if (identifier.startsWith("top_streak_value_")) {
+            try {
+                int position = Integer.parseInt(identifier.substring("top_streak_value_".length()));
+                return getTopStreakValue(position);
+            } catch (NumberFormatException e) {
+                return "";
+            }
+        }
+        
+        if (identifier.startsWith("top_total_claims_name_")) {
+            try {
+                int position = Integer.parseInt(identifier.substring("top_total_claims_name_".length()));
+                return getTopTotalClaimsName(position);
+            } catch (NumberFormatException e) {
+                return "";
+            }
+        }
+        
+        if (identifier.startsWith("top_total_claims_value_")) {
+            try {
+                int position = Integer.parseInt(identifier.substring("top_total_claims_value_".length()));
+                return getTopTotalClaimsValue(position);
+            } catch (NumberFormatException e) {
+                return "";
+            }
+        }
+        
         switch (identifier.toLowerCase()) {
             case "streak":
                 return String.valueOf(data.getStreak());
                 
             case "total_claims":
                 return String.valueOf(data.getTotalClaims());
+                
+            case "top_streak_rank":
+                return getPlayerRankByStreak(player);
+                
+            case "top_total_claims_rank":
+                return getPlayerRankByTotalClaims(player);
                 
             case "next_day":
             case "current_day":
@@ -202,6 +253,92 @@ public class DailyRewardsPlaceholder extends PlaceholderExpansion {
         }
     }
 
+    private String getTopStreakName(int position) {
+        List<PlayerData> topList = getOrUpdateStreakLeaderboard();
+        if (position > 0 && position <= topList.size()) {
+            PlayerData data = topList.get(position - 1);
+            return data.getPlayerName() != null ? data.getPlayerName() : "Unknown";
+        }
+        return "-";
+    }
+    
+    private String getTopStreakValue(int position) {
+        List<PlayerData> topList = getOrUpdateStreakLeaderboard();
+        if (position > 0 && position <= topList.size()) {
+            return String.valueOf(topList.get(position - 1).getStreak());
+        }
+        return "0";
+    }
+    
+    private String getTopTotalClaimsName(int position) {
+        List<PlayerData> topList = getOrUpdateTotalClaimsLeaderboard();
+        if (position > 0 && position <= topList.size()) {
+            PlayerData data = topList.get(position - 1);
+            return data.getPlayerName() != null ? data.getPlayerName() : "Unknown";
+        }
+        return "-";
+    }
+    
+    private String getTopTotalClaimsValue(int position) {
+        List<PlayerData> topList = getOrUpdateTotalClaimsLeaderboard();
+        if (position > 0 && position <= topList.size()) {
+            return String.valueOf(topList.get(position - 1).getTotalClaims());
+        }
+        return "0";
+    }
+    
+    private String getPlayerRankByStreak(Player player) {
+        try {
+            CompletableFuture<Integer> future = plugin.getDatabaseManager().getPlayerRankByStreak(player.getUniqueId());
+            Integer rank = future.get(100, TimeUnit.MILLISECONDS);
+            return rank != null ? String.valueOf(rank) : "0";
+        } catch (Exception e) {
+            return "0";
+        }
+    }
+    
+    private String getPlayerRankByTotalClaims(Player player) {
+        try {
+            CompletableFuture<Integer> future = plugin.getDatabaseManager().getPlayerRankByTotalClaims(player.getUniqueId());
+            Integer rank = future.get(100, TimeUnit.MILLISECONDS);
+            return rank != null ? String.valueOf(rank) : "0";
+        } catch (Exception e) {
+            return "0";
+        }
+    }
+    
+    private List<PlayerData> getOrUpdateStreakLeaderboard() {
+        if (cachedStreak == null || cachedStreak.isExpired()) {
+            try {
+                CompletableFuture<List<PlayerData>> future = plugin.getDatabaseManager().getTopStreak(maxLeaderboardPositions);
+                List<PlayerData> data = future.get(200, TimeUnit.MILLISECONDS);
+                cachedStreak = new CachedLeaderboard(data);
+            } catch (Exception e) {
+                if (cachedStreak != null) {
+                    return cachedStreak.getData();
+                }
+                return new java.util.ArrayList<>();
+            }
+        }
+        return cachedStreak.getData();
+    }
+    
+    private List<PlayerData> getOrUpdateTotalClaimsLeaderboard() {
+        if (cachedTotalClaims == null || cachedTotalClaims.isExpired()) {
+            try {
+                CompletableFuture<List<PlayerData>> future = plugin.getDatabaseManager().getTopTotalClaims(maxLeaderboardPositions);
+                List<PlayerData> data = future.get(200, TimeUnit.MILLISECONDS);
+                cachedTotalClaims = new CachedLeaderboard(data);
+            } catch (Exception e) {
+                if (cachedTotalClaims != null) {
+                    return cachedTotalClaims.getData();
+                }
+                return new java.util.ArrayList<>();
+            }
+        }
+        return cachedTotalClaims.getData();
+    }
+
     private static class CachedValue {
         private final String value;
         private final long timestamp;
@@ -217,6 +354,24 @@ public class DailyRewardsPlaceholder extends PlaceholderExpansion {
 
         public boolean isExpired() {
             return System.currentTimeMillis() - timestamp > CACHE_DURATION;
+        }
+    }
+    
+    private class CachedLeaderboard {
+        private final List<PlayerData> data;
+        private final long timestamp;
+        
+        public CachedLeaderboard(List<PlayerData> data) {
+            this.data = data;
+            this.timestamp = System.currentTimeMillis();
+        }
+        
+        public List<PlayerData> getData() {
+            return data;
+        }
+        
+        public boolean isExpired() {
+            return System.currentTimeMillis() - timestamp > leaderboardCacheDuration;
         }
     }
 }
