@@ -19,6 +19,10 @@ rewards:
   claimed: "&#00FF00คุณได้รับรางวัลวันที่ {day} แล้ว!"
   already-claimed: "&#FF0000คุณได้รับรางวัลวันนี้ไปแล้ว!"
   not-available: "&#FF0000รางวัลนี้ยังไม่พร้อมใช้งาน!"
+  playtime-required: "&#FF0000คุณต้องเล่นอีก {time} ก่อนรับรางวัล!"
+  claim-success-toast: "รับรางวัลสำเร็จแล้ว!"
+  already-claimed-toast: "รับรางวัลวันนี้ไปแล้ว"
+  playtime-required-toast: "ต้องเล่นให้ครบเวลาก่อน"
   streak-lost: "&#FF0000สตรีคของคุณถูกรีเซ็ตแล้ว!"
   streak-continue: "&#00FF00สตรีคของคุณยังคงอยู่! วันที่ {day}"
   

@@ -1,5 +1,5 @@
 # Config version (DO NOT CHANGE THIS)
-config-version: 2
+config-version: 3
 
 # Language setting (th, en, etc.)
 language: "en"
@@ -47,6 +47,29 @@ leaderboard:
   cache-duration: 300
   # Maximum number of players to show in leaderboards (10 = 1st to 10th place)
   max-positions: 10
+
+# Playtime requirement
+playtime:
+  # Enable playtime requirement
+  enabled: false
+  # Required playtime in seconds before claiming daily reward
+  # Examples: 60 = 1 minute, 600 = 10 minutes, 3600 = 1 hour
+  required-seconds: 600
+  # Reset playtime after each claim
+  reset-after-claim: true
+
+# Toast notification
+# Frame type: TASK (normal), GOAL (rounded), CHALLENGE (fancy)
+toast:
+  enabled: true
+  success:
+    icon: "DIAMOND"
+    custom-model-data: 0
+    frame: "GOAL"
+  fail:
+    icon: "BARRIER"
+    custom-model-data: 0
+    frame: "TASK"
 
 # Join notification
 join-notification:

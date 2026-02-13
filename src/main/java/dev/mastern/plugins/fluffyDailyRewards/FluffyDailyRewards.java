@@ -7,18 +7,16 @@ import dev.mastern.plugins.fluffyDailyRewards.listeners.PlayerListener;
 import dev.mastern.plugins.fluffyDailyRewards.managers.LanguageManager;
 import dev.mastern.plugins.fluffyDailyRewards.managers.MenuManager;
 import dev.mastern.plugins.fluffyDailyRewards.managers.PlayerDataManager;
+import dev.mastern.plugins.fluffyDailyRewards.managers.PlaytimeTracker;
 import dev.mastern.plugins.fluffyDailyRewards.managers.RewardsManager;
+import dev.mastern.plugins.fluffyDailyRewards.managers.ToastManager;
+import dev.mastern.plugins.fluffyDailyRewards.utils.ConfigUpdater;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
 
 public final class FluffyDailyRewards extends JavaPlugin {
     
@@ -29,6 +27,8 @@ public final class FluffyDailyRewards extends JavaPlugin {
     private RewardsManager rewardsManager;
     private LanguageManager languageManager;
     private MenuManager menuManager;
+    private PlaytimeTracker playtimeTracker;
+    private ToastManager toastManager;
 
     @Override
     public void onEnable() {
@@ -48,7 +48,9 @@ public final class FluffyDailyRewards extends JavaPlugin {
         getLogger().info("   Daily Rewards v" + getDescription().getVersion());
         
         saveDefaultConfigs();
-        updateConfig();
+        
+        ConfigUpdater configUpdater = new ConfigUpdater(this);
+        configUpdater.updateAll();
         
         try {
             getLogger().info("Initializing database...");
@@ -60,6 +62,8 @@ public final class FluffyDailyRewards extends JavaPlugin {
             languageManager = new LanguageManager(this);
             playerDataManager = new PlayerDataManager(this, databaseManager);
             menuManager = new MenuManager(this);
+            playtimeTracker = new PlaytimeTracker(this);
+            toastManager = new ToastManager(this);
             
             getLogger().info("Registering commands...");
             DailyCommand dailyCommand = new DailyCommand(this);
@@ -70,11 +74,21 @@ public final class FluffyDailyRewards extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new MenuListener(this), this);
             Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
             
+            // Track already online players for playtime
+            if (playtimeTracker.isEnabled()) {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    playtimeTracker.onPlayerJoin(player);
+                }
+            }
+            
             getLogger().info("FluffyDailyRewards has been enabled successfully!");
             getLogger().info("Loaded " + rewardsManager.getTotalRewards() + " rewards");
             getLogger().info("Database: " + getConfig().getString("database.type", "sqlite"));
             getLogger().info("Language: " + getConfig().getString("language", "en"));
             getLogger().info("Reset Type: " + getConfig().getString("reset-type", "midnight"));
+            if (playtimeTracker.isEnabled()) {
+                getLogger().info("Playtime Requirement: " + playtimeTracker.formatTime(playtimeTracker.getRequiredSeconds()));
+            }
             
             int pluginId = 29504;
             Metrics metrics = new Metrics(this, pluginId);
@@ -161,69 +175,13 @@ public final class FluffyDailyRewards extends JavaPlugin {
         }
     }
     
-    private void updateConfig() {
-        FileConfiguration config = getConfig();
-        int currentVersion = config.getInt("config-version", 1);
-        int latestVersion = 2;
-        
-        if (currentVersion < latestVersion) {
-            try {
-                File configFile = new File(getDataFolder(), "config.yml");
-                List<String> lines = Files.readAllLines(configFile.toPath(), StandardCharsets.UTF_8);
-                List<String> newLines = new ArrayList<>();
-                boolean leaderboardAdded = false;
-                
-                for (int i = 0; i < lines.size(); i++) {
-                    String line = lines.get(i);
-                    newLines.add(line);
-                    
-                    if (currentVersion < 2 && !leaderboardAdded && line.trim().startsWith("count:")) {
-                        if (i + 1 < lines.size() && !lines.get(i + 1).contains("leaderboard")) {
-                            newLines.add("");
-                            newLines.add("# Leaderboard settings");
-                            newLines.add("leaderboard:");
-                            newLines.add("  # Cache duration in seconds");
-                            newLines.add("  cache-duration: 300");
-                            newLines.add("  # Maximum number of players to show in leaderboards (10 = 1st to 10th place)");
-                            newLines.add("  max-positions: 10");
-                            leaderboardAdded = true;
-                        }
-                    }
-                    
-                    if (line.trim().startsWith("config-version:")) {
-                        newLines.set(newLines.size() - 1, "config-version: " + latestVersion);
-                    }
-                }
-                
-                if (currentVersion == 1) {
-                    newLines.add(0, "");
-                    newLines.add(0, "config-version: " + latestVersion);
-                    newLines.add(0, "# Config version (DO NOT CHANGE THIS)");
-                }
-                
-                try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                        new FileOutputStream(configFile), StandardCharsets.UTF_8))) {
-                    for (int i = 0; i < newLines.size(); i++) {
-                        writer.write(newLines.get(i));
-                        if (i < newLines.size() - 1) {
-                            writer.newLine();
-                        }
-                    }
-                }
-                
-                reloadConfig();
-                
-            } catch (IOException e) {
-                getLogger().warning("Failed to update config file: " + e.getMessage());
-            }
-        }
-    }
-    
     public void reloadPlugin() {
         reloadConfig();
         rewardsManager.reload();
         languageManager.reload();
         menuManager.reload();
+        playtimeTracker.reload();
+        toastManager.reload();
         getLogger().info("Plugin configuration reloaded!");
     }
     
@@ -246,6 +204,14 @@ public final class FluffyDailyRewards extends JavaPlugin {
     
     public MenuManager getMenuManager() {
         return menuManager;
+    }
+    
+    public PlaytimeTracker getPlaytimeTracker() {
+        return playtimeTracker;
+    }
+    
+    public ToastManager getToastManager() {
+        return toastManager;
     }
     
     public void runSync(Player player, Runnable task) {

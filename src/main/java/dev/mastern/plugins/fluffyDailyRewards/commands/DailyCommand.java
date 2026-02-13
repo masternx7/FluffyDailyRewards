@@ -177,7 +177,7 @@ public class DailyCommand implements CommandExecutor, TabCompleter {
         }
         
         plugin.getPlayerDataManager().claimReward(target, day).thenAccept(success -> {
-            plugin.runSync(target, () -> {
+            plugin.runGlobalSync(() -> {
                 if (success) {
                     Map<String, String> replacements = new HashMap<>();
                     replacements.put("player", target.getName());
@@ -201,7 +201,7 @@ public class DailyCommand implements CommandExecutor, TabCompleter {
             data.resetStreak();
             data.setLastClaimTime(0);
             plugin.getPlayerDataManager().savePlayerData(data).thenRun(() -> {
-                plugin.runSync(target, () -> {
+                plugin.runGlobalSync(() -> {
                     Map<String, String> replacements = new HashMap<>();
                     replacements.put("player", target.getName());
                     sender.sendMessage(lang.getMessage("general.reset", replacements));
@@ -233,7 +233,7 @@ public class DailyCommand implements CommandExecutor, TabCompleter {
         plugin.getPlayerDataManager().getPlayerData(target).thenAccept(data -> {
             data.setCurrentDay(day);
             plugin.getPlayerDataManager().savePlayerData(data).thenRun(() -> {
-                plugin.runSync(target, () -> {
+                plugin.runGlobalSync(() -> {
                     Map<String, String> replacements = new HashMap<>();
                     replacements.put("player", target.getName());
                     replacements.put("day", String.valueOf(day));
@@ -251,7 +251,7 @@ public class DailyCommand implements CommandExecutor, TabCompleter {
         }
         
         plugin.getPlayerDataManager().getPlayerData(target).thenAccept(data -> {
-            plugin.runSync(target, () -> {
+            plugin.runGlobalSync(() -> {
                 FileConfiguration menuConfig = plugin.getMenuManager().getMenuConfig();
                 ConfigurationSection infoConfig = menuConfig.getConfigurationSection("decorations.info");
                 

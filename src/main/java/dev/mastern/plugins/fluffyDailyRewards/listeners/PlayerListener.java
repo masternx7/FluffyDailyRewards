@@ -30,6 +30,10 @@ public class PlayerListener implements Listener {
         
         plugin.getPlayerDataManager().getPlayerData(player, true);
         
+        if (plugin.getPlaytimeTracker() != null) {
+            plugin.getPlaytimeTracker().onPlayerJoin(player);
+        }
+        
         if (!plugin.getConfig().getBoolean("join-notification.enabled", true)) {
             return;
         }
@@ -91,7 +95,13 @@ public class PlayerListener implements Listener {
     
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        plugin.getPlayerDataManager().unloadPlayer(event.getPlayer().getUniqueId());
-        plugin.getMenuManager().removePlayer(event.getPlayer().getUniqueId());
+        Player player = event.getPlayer();
+        
+        if (plugin.getPlaytimeTracker() != null) {
+            plugin.getPlaytimeTracker().onPlayerQuit(player);
+        }
+        
+        plugin.getPlayerDataManager().unloadPlayer(player.getUniqueId());
+        plugin.getMenuManager().removePlayer(player.getUniqueId());
     }
 }

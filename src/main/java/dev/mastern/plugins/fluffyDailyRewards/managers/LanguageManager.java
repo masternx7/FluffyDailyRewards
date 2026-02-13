@@ -46,7 +46,8 @@ public class LanguageManager {
     public String getMessage(String key) {
         String message = messages.getOrDefault(key, key);
         
-        if (key.startsWith("general.") || key.startsWith("rewards.")) {
+        // Don't add prefix to toast messages
+        if (!key.endsWith("-toast") && (key.startsWith("general.") || key.startsWith("rewards."))) {
             String prefix = messages.getOrDefault("prefix", "");
             if (!message.contains("{prefix}")) {
                 message = prefix + " " + message;
@@ -60,7 +61,7 @@ public class LanguageManager {
     public String getMessage(String key, Map<String, String> replacements) {
         String message = messages.getOrDefault(key, key);
         
-        if (key.startsWith("general.") || key.startsWith("rewards.")) {
+        if (!key.endsWith("-toast") && (key.startsWith("general.") || key.startsWith("rewards."))) {
             String prefix = messages.getOrDefault("prefix", "");
             if (!message.contains("{prefix}")) {
                 message = prefix + " " + message;

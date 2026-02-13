@@ -106,6 +106,12 @@ public class PlayerDataManager {
                 return CompletableFuture.completedFuture(false);
             }
             
+            if (plugin.getPlaytimeTracker() != null && plugin.getPlaytimeTracker().isEnabled()) {
+                if (!plugin.getPlaytimeTracker().hasMetRequirement(player)) {
+                    return CompletableFuture.completedFuture(false);
+                }
+            }
+            
             if (day != data.getCurrentDay()) {
                 return CompletableFuture.completedFuture(false);
             }
@@ -133,6 +139,17 @@ public class PlayerDataManager {
                 data.setCurrentDay(1);
             } else {
                 data.setCurrentDay(day + 1);
+            }
+            
+            if (plugin.getPlaytimeTracker() != null) {
+                plugin.getPlaytimeTracker().resetPlaytime(player);
+            }
+            
+            if (plugin.getToastManager() != null && plugin.getToastManager().isEnabled()) {
+                String toastMessage = plugin.getLanguageManager().colorize(
+                    plugin.getLanguageManager().getMessage("rewards.claim-success-toast")
+                );
+                plugin.getToastManager().showSuccessToast(player, toastMessage);
             }
             
             return savePlayerData(data).thenApply(v -> true);

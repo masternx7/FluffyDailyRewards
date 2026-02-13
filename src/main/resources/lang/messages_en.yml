@@ -19,6 +19,10 @@ rewards:
   claimed: "&#00FF00You have claimed day {day} reward!"
   already-claimed: "&#FF0000You have already claimed today's reward!"
   not-available: "&#FF0000This reward is not available yet!"
+  playtime-required: "&#FF0000You need {time} more playtime before claiming!"
+  claim-success-toast: "&#AD79FCDaily Reward Claimed!"
+  already-claimed-toast: "&#AD79FCAlready Claimed Today"
+  playtime-required-toast: "&#AD79FCMore Playtime Required"
   streak-lost: "&#FF0000Your streak has been reset!"
   streak-continue: "&#00FF00Your streak continues! Day {day}"
   

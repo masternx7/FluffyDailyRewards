@@ -161,13 +161,42 @@ public class MenuListener implements Listener {
             if (day != data.getCurrentDay()) {
                 menuManager.playSound(player, "sounds.claim-already", Sound.ENTITY_VILLAGER_NO);
                 player.sendMessage(lang.getMessage("rewards.not-available"));
+                
+                // Show fail toast
+                if (plugin.getToastManager() != null && plugin.getToastManager().isEnabled()) {
+                    String toastMessage = lang.colorize(lang.getMessage("rewards.already-claimed-toast"));
+                    plugin.getToastManager().showFailToast(player, toastMessage);
+                }
                 return;
             }
             
             if (!dataManager.canClaim(data)) {
                 menuManager.playSound(player, "sounds.claim-already", Sound.ENTITY_VILLAGER_NO);
                 player.sendMessage(lang.getMessage("rewards.already-claimed"));
+                
+                // Show fail toast
+                if (plugin.getToastManager() != null && plugin.getToastManager().isEnabled()) {
+                    String toastMessage = lang.colorize(lang.getMessage("rewards.already-claimed-toast"));
+                    plugin.getToastManager().showFailToast(player, toastMessage);
+                }
                 return;
+            }
+            
+            if (plugin.getPlaytimeTracker() != null && plugin.getPlaytimeTracker().isEnabled()) {
+                if (!plugin.getPlaytimeTracker().hasMetRequirement(player)) {
+                    String remainingTime = plugin.getPlaytimeTracker().formatRemainingTime(player, lang);
+                    Map<String, String> replacements = new HashMap<>();
+                    replacements.put("time", remainingTime);
+                    player.sendMessage(lang.getMessage("rewards.playtime-required", replacements));
+                    menuManager.playSound(player, "sounds.claim-already", Sound.ENTITY_VILLAGER_NO);
+                    
+                    // Show fail toast
+                    if (plugin.getToastManager() != null && plugin.getToastManager().isEnabled()) {
+                        String toastMessage = lang.colorize(lang.getMessage("rewards.playtime-required-toast"));
+                        plugin.getToastManager().showFailToast(player, toastMessage);
+                    }
+                    return;
+                }
             }
             
             dataManager.claimReward(player, day).thenAccept(success -> {
