@@ -8,6 +8,7 @@ import dev.mastern.plugins.fluffyDailyRewards.managers.LanguageManager;
 import dev.mastern.plugins.fluffyDailyRewards.managers.MenuManager;
 import dev.mastern.plugins.fluffyDailyRewards.managers.PlayerDataManager;
 import dev.mastern.plugins.fluffyDailyRewards.managers.RewardsManager;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -72,6 +73,9 @@ public final class FluffyDailyRewards extends JavaPlugin {
             getLogger().info("Database: " + getConfig().getString("database.type", "sqlite"));
             getLogger().info("Language: " + getConfig().getString("language", "en"));
             getLogger().info("Reset Type: " + getConfig().getString("reset-type", "midnight"));
+            
+            int pluginId = 29504;
+            Metrics metrics = new Metrics(this, pluginId);
             
             Runnable registerPAPI = () -> {
                 if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
