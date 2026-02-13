@@ -14,10 +14,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class FluffyDailyRewards extends JavaPlugin {
     
@@ -47,6 +48,7 @@ public final class FluffyDailyRewards extends JavaPlugin {
         getLogger().info("   Daily Rewards v" + getDescription().getVersion());
         
         saveDefaultConfigs();
+        updateConfig();
         
         try {
             getLogger().info("Initializing database...");
@@ -155,6 +157,64 @@ public final class FluffyDailyRewards extends JavaPlugin {
             } catch (Exception e) {
                 getLogger().severe("Could not save " + resourcePath + ": " + e.getMessage());
                 e.printStackTrace();
+            }
+        }
+    }
+    
+    private void updateConfig() {
+        FileConfiguration config = getConfig();
+        int currentVersion = config.getInt("config-version", 1);
+        int latestVersion = 2;
+        
+        if (currentVersion < latestVersion) {
+            try {
+                File configFile = new File(getDataFolder(), "config.yml");
+                List<String> lines = Files.readAllLines(configFile.toPath(), StandardCharsets.UTF_8);
+                List<String> newLines = new ArrayList<>();
+                boolean leaderboardAdded = false;
+                
+                for (int i = 0; i < lines.size(); i++) {
+                    String line = lines.get(i);
+                    newLines.add(line);
+                    
+                    if (currentVersion < 2 && !leaderboardAdded && line.trim().startsWith("count:")) {
+                        if (i + 1 < lines.size() && !lines.get(i + 1).contains("leaderboard")) {
+                            newLines.add("");
+                            newLines.add("# Leaderboard settings");
+                            newLines.add("leaderboard:");
+                            newLines.add("  # Cache duration in seconds");
+                            newLines.add("  cache-duration: 300");
+                            newLines.add("  # Maximum number of players to show in leaderboards (10 = 1st to 10th place)");
+                            newLines.add("  max-positions: 10");
+                            leaderboardAdded = true;
+                        }
+                    }
+                    
+                    if (line.trim().startsWith("config-version:")) {
+                        newLines.set(newLines.size() - 1, "config-version: " + latestVersion);
+                    }
+                }
+                
+                if (currentVersion == 1) {
+                    newLines.add(0, "");
+                    newLines.add(0, "config-version: " + latestVersion);
+                    newLines.add(0, "# Config version (DO NOT CHANGE THIS)");
+                }
+                
+                try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                        new FileOutputStream(configFile), StandardCharsets.UTF_8))) {
+                    for (int i = 0; i < newLines.size(); i++) {
+                        writer.write(newLines.get(i));
+                        if (i < newLines.size() - 1) {
+                            writer.newLine();
+                        }
+                    }
+                }
+                
+                reloadConfig();
+                
+            } catch (IOException e) {
+                getLogger().warning("Failed to update config file: " + e.getMessage());
             }
         }
     }
