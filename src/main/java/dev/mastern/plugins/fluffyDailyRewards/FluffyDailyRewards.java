@@ -74,7 +74,6 @@ public final class FluffyDailyRewards extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new MenuListener(this), this);
             Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
             
-            // Track already online players for playtime
             if (playtimeTracker.isEnabled()) {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     playtimeTracker.onPlayerJoin(player);

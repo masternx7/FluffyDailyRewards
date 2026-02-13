@@ -162,7 +162,6 @@ public class MenuListener implements Listener {
                 menuManager.playSound(player, "sounds.claim-already", Sound.ENTITY_VILLAGER_NO);
                 player.sendMessage(lang.getMessage("rewards.not-available"));
                 
-                // Show fail toast
                 if (plugin.getToastManager() != null && plugin.getToastManager().isEnabled()) {
                     String toastMessage = lang.colorize(lang.getMessage("rewards.already-claimed-toast"));
                     plugin.getToastManager().showFailToast(player, toastMessage);
@@ -174,7 +173,6 @@ public class MenuListener implements Listener {
                 menuManager.playSound(player, "sounds.claim-already", Sound.ENTITY_VILLAGER_NO);
                 player.sendMessage(lang.getMessage("rewards.already-claimed"));
                 
-                // Show fail toast
                 if (plugin.getToastManager() != null && plugin.getToastManager().isEnabled()) {
                     String toastMessage = lang.colorize(lang.getMessage("rewards.already-claimed-toast"));
                     plugin.getToastManager().showFailToast(player, toastMessage);
@@ -190,7 +188,6 @@ public class MenuListener implements Listener {
                     player.sendMessage(lang.getMessage("rewards.playtime-required", replacements));
                     menuManager.playSound(player, "sounds.claim-already", Sound.ENTITY_VILLAGER_NO);
                     
-                    // Show fail toast
                     if (plugin.getToastManager() != null && plugin.getToastManager().isEnabled()) {
                         String toastMessage = lang.colorize(lang.getMessage("rewards.playtime-required-toast"));
                         plugin.getToastManager().showFailToast(player, toastMessage);

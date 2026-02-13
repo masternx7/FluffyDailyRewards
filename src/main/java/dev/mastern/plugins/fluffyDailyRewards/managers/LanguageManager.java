@@ -46,7 +46,6 @@ public class LanguageManager {
     public String getMessage(String key) {
         String message = messages.getOrDefault(key, key);
         
-        // Don't add prefix to toast messages
         if (!key.endsWith("-toast") && (key.startsWith("general.") || key.startsWith("rewards."))) {
             String prefix = messages.getOrDefault("prefix", "");
             if (!message.contains("{prefix}")) {
